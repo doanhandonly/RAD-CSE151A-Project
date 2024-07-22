@@ -8,6 +8,8 @@ Names:
 - Doanh Nguyen, don012 (at) ucsd (dot) edu 
 - Ryan Batubara, rbatubara (at) ucsd (dot) edu
 
+**NOTE:** This README is also available as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/)!
+
 ## Abstract
 
 With the end of the Covid 19 pandemic, there has been a huge boom in travel and entertainment industries worldwide. With the pandemic still in the minds of many people, travelers may tend to seek more private and personal accommodations such as those on AirBnB. Here, we predict the review score (on a scale of 0 to 100) of an AirBnB posting based on various features, like amenities available, number of reviews, price, and others. The intention is that this may provide AirBnB hosts better insight into what makes a highly rated AirBnB experience.
@@ -72,6 +74,8 @@ This exploratory data analysis will be split into three parts:
 - [Text and Categorical Data EDA](#text-and-categorical-eda), where we see how textual and categorical data may help our predictions.
 
 You can see our EDA in the Jupyter notebook called `eda.ipynb` in the `eda` folder [here](./eda/eda.ipynb).
+
+![Model 1 Banner](Model1Banner.png)
 
 ## Choosing a First Model
 
@@ -139,9 +143,9 @@ We summarize it by taking the averages below:
 
 We will now interpret the above metrics in more detail. We start with the `mean_absolute_error`, which tells us that on average our predicted rating is 0.19 off for both the test and train cases. The similarity between these values tell us that our model has not overfitted, but the large values (considering review ratings go from 0 to 5 only) show us that the model is not very good.
 
-Same can be said for out `mean_squared_error`. We note that its value is smaller than the `mean_absolute_error`, which makes sense as it is roughly the square root of the `mean_absolute_error`.
+Same can be said for our `mean_squared_error`. We note that its value is smaller than the `mean_absolute_error`, which makes sense as it is roughly the square root of the `mean_absolute_error`.
 
-The r2_score however tells a very interesting story. The r2_score is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our low value of 0.08 tells us that despite the large number of features, we still have not effectively represented the data. This makes sense - it is very hard to even describe in words what would make one AirBnb listing more highly rated than the other. However, this also gives us plenty of room to improve in our second model.
+The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our low value of 0.08 tells us that despite the large number of features, we still have not effectively represented the data. This makes sense - it is very hard to even describe in words what would make one AirBnb listing more highly rated than the other. However, this also gives us plenty of room to improve in our second model.
 
 ## Model on Fitting Graph
 
