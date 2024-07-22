@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>RAD-CSE151A-Project</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="RAD-CSE151A-Project" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="RAD-CSE151A-Project" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="RAD-CSE151A-Project" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","headline":"RAD-CSE151A-Project","name":"RAD-CSE151A-Project","url":"http://localhost:4000/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="RAD-CSE151A-Project" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">RAD-CSE151A-Project</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="home">
+<p><img src="/ProjectBanner.jpg" alt="Banner" /></p>
+
+<h1 id="predicting-airbnb-review-scores">Predicting AirBnB Review Scores</h1>
+
+<p>Names:</p>
+<ul>
+  <li>Artur Rodrigues, arodrigues (at) ucsd (dot) edu</li>
+  <li>Doanh Nguyen, don012 (at) ucsd (dot) edu</li>
+  <li>Ryan Batubara, rbatubara (at) ucsd (dot) edu</li>
+</ul>
+
+<h2 id="abstract">Abstract</h2>
+
+<p>With the end of the Covid 19 pandemic, there has been a huge boom in travel and entertainment industries worldwide. With the pandemic still in the minds of many people, travelers may tend to seek more private and personal accommodations such as those on AirBnB. Here, we predict the review score (on a scale of 0 to 100) of an AirBnB posting based on various features, like amenities available, number of reviews, price, and others. The intention is that this may provide AirBnB hosts better insight into what makes a highly rated AirBnB experience.</p>
+
+<h2 id="dataset">Dataset</h2>
+
+<p>This project will be based on data gathered by <a href="https://insideairbnb.com/get-the-data/">Inside AirBnb</a> May to June 2024. To keep our analysis more focused, we will only be analyzing AirBnB listings from the United States. Since Inside AirBnB only offers datasets per city, we have downloaded all US cities with AirBnB listings and combined them into one csv file. Due to the size of this file, <a href="https://insideairbnb.com/data-policies/">Inside AirBnB reposting policies</a>, and <a href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage">Github Data storage policies</a>, we will not be uploading this combined file to the repository. That said, the combined dataset is available <a href="https://drive.google.com/file/d/1DwNaHBBgTesytLoGn23QZMURfK41Du2K/view?usp=sharing">here</a>, but requires a UCSD account.</p>
+
+<p>A data dictionary for the data can be found at <a href="https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596">Inside AirBnB’s data dictionary</a>.</p>
+
+<h2 id="data-preprocessing">Data Preprocessing</h2>
+
+<p>Our data preprocessing can be split into three steps:</p>
+
+<h3 id="dropping-unecessary-columns">Dropping Unecessary Columns</h3>
+
+<p>Some columns in the original data are unecessary for our purposes. For a detailed description of each column, see the <a href="https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596">Inside AirBnB Data Dictionary</a>.</p>
+
+<p>We list reasons for dropping these columns:</p>
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">All URL</code>: Unique elements for each listing. Does not contribute anything when predicting the review score.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">All ID</code>: Unique elements for each listing. Does not contribute anything when predicting the review score.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">host_name</code>: Indiviudally unique elements for each listing. Does not contribute anything when predicting the review score.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">license</code>: Unique elements for each listing. Does not contribute anything when predicting the review score.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">source</code>: Holds whether or not the listing was found via searching by city or if the listing was seen in a previous scrape. There is no logical
+connection between this and the target variable, which is review score.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">host_location</code>: Private information.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">host_total_listings_count</code>: There exists another feature called <code class="language-plaintext highlighter-rouge">host_listings_count</code>, this is a duplicate feature.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">calendar_last_scarped</code>: Holds the date of the last time the data was scrapped, no logical connection between this and predicting <code class="language-plaintext highlighter-rouge">review_score_rating</code>.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">first &amp; last review</code>: provides temporal data for the first &amp; last review date. Last review date can be misleading as an unpopular listing may have no reviews for an extended amount of time, and suddenly get a review.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">minimum_minimum_nights, maximum_minimum_nights, minimum_maximum_nights, maximum_maximum_nights</code>: The all time minimum and maximum of a listing’s minimum and maximum nights requirement for booking. This has no correlation to review score because you cannot write a review if you have not stayed at the listing. A person who wants to book a listing for 10 days is not going to book a listing that has a maximum night stay of 9 days.</p>
+  </li>
+</ul>
+
+<h3 id="dropping-0-review-listings">Dropping 0 Review Listings</h3>
+
+<p>Since we are trying to predict AirBnB review scores (for the purpose of finding out what makes a good review score), we will be dropping all listings that have 0 reviews. This is because, from the perspective of our model, these rows do not provide any meaningful information into what makes a highly rated listing (since their review scores are <code class="language-plaintext highlighter-rouge">NaN</code>, and are missing by design).</p>
+
+<p>We remark that this still leaves us with almost 200 thousand rows, so the data remains large enough for a model.</p>
+
+<h3 id="fixing-datatypes">Fixing Datatypes</h3>
+
+<p>Some columns have incorrect datatypes, such as:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">host_response_rate</code> and <code class="language-plaintext highlighter-rouge">host_acceptance_rate</code> should be change from a <code class="language-plaintext highlighter-rouge">str</code> percent to a <code class="language-plaintext highlighter-rouge">float</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">host_is_superhost</code>, <code class="language-plaintext highlighter-rouge">host_has_profile_pic</code>, <code class="language-plaintext highlighter-rouge">host_identity_verified</code>, <code class="language-plaintext highlighter-rouge">has_availability</code>, <code class="language-plaintext highlighter-rouge">instant_bookable</code> should be booleans.</li>
+  <li><code class="language-plaintext highlighter-rouge">last_scraped</code> and <code class="language-plaintext highlighter-rouge">host_since</code> should be Pandas timestamps.</li>
+  <li><code class="language-plaintext highlighter-rouge">price</code> should be a float in dollars.</li>
+  <li><code class="language-plaintext highlighter-rouge">amenities</code> should be a list.</li>
+</ul>
+
+<h2 id="exploratory-data-analysis">Exploratory Data Analysis</h2>
+
+<p>This exploratory data analysis will be split into three parts:</p>
+
+<ul>
+  <li><a href="#general-data-eda">General Data EDA</a>, where we visualize general information about the dataset.</li>
+  <li><a href="#numerical-data-eda">Numerical Data EDA</a>, where we see how numerical features relate to predicting review scores.</li>
+  <li><a href="#text-and-categorical-eda">Text and Categorical Data EDA</a>, where we see how textual and categorical data may help our predictions.</li>
+</ul>
+
+<p>You can see our EDA in the Jupyter notebook called <code class="language-plaintext highlighter-rouge">eda.ipynb</code> in the <code class="language-plaintext highlighter-rouge">eda</code> folder <a href="/eda/eda.ipynb">here</a>.</p>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">RAD-CSE151A-Project</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">RAD-CSE151A-Project</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
