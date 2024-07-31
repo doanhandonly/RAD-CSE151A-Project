@@ -8,13 +8,12 @@ Names:
 - Doanh Nguyen, don012 (at) ucsd (dot) edu 
 - Ryan Batubara, rbatubara (at) ucsd (dot) edu
 
-**NOTE:** This README is also available as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/)!
+**NOTE:** This readme is also available as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/)!
 
-# Written Report
+**Our written report can be found in [Report.md](Report.md), or as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/Report.html)!**
 
 ## Table of Contents
 - [Predicting AirBnB Review Scores](#predicting-airbnb-review-scores)
-- [Written Report](#written-report)
   - [Table of Contents](#table-of-contents)
   - [Abstract](#abstract)
   - [Dataset](#dataset)
@@ -23,11 +22,19 @@ Names:
     - [Dropping 0 Review Listings](#dropping-0-review-listings)
     - [Fixing Datatypes](#fixing-datatypes)
   - [Exploratory Data Analysis](#exploratory-data-analysis)
-  - [Choosing a First Model](#choosing-a-first-model)
-  - [Model Evaluation](#model-evaluation)
-  - [Model on Fitting Graph](#model-on-fitting-graph)
-  - [Model Improvements](#model-improvements)
-  - [Conclusion and Next Model](#conclusion-and-next-model)
+  - [First Model](#first-model)
+    - [Choosing a First Model](#choosing-a-first-model)
+    - [First Model Evaluation](#first-model-evaluation)
+    - [First Model on Fitting Graph](#first-model-on-fitting-graph)
+    - [Model Improvements](#model-improvements)
+    - [Conclusion and Next Model](#conclusion-and-next-model)
+  - [Second Model](#second-model)
+    - [Choosing a Second Model](#choosing-a-second-model)
+    - [Hyperparamter](#hyperparamter)
+    - [Second Model Evaluation](#second-model-evaluation)
+    - [Second Model on Fitting Graph](#second-model-on-fitting-graph)
+    - [](#)
+  - [Conclusion](#conclusion)
 
 
 ## Abstract
@@ -39,6 +46,8 @@ With the end of the Covid 19 pandemic, there has been a huge boom in travel and 
 This project will be based on data gathered by [Inside AirBnb](https://insideairbnb.com/get-the-data/) May to June 2024. To keep our analysis more focused, we will only be analyzing AirBnB listings from the United States. Since Inside AirBnB only offers datasets per city, we have downloaded all US cities with AirBnB listings and combined them into one csv file. Due to the size of this file, [Inside AirBnB reposting policies](https://insideairbnb.com/data-policies/), and [Github Data storage policies](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage), we will not be uploading this combined file to the repository. That said, the combined dataset is available [here](https://drive.google.com/file/d/1DwNaHBBgTesytLoGn23QZMURfK41Du2K/view?usp=sharing), but requires a UCSD account.
 
 A data dictionary for the data can be found at [Inside AirBnB's data dictionary](https://docs.google.com/spreadsheets/d/1iWCNJcSutYqpULSQHlNyGInUvHg2BoUGoNRIGa6Szc4/edit?gid=1322284596#gid=1322284596).
+
+![Banner](EdaBanner.jpg)
 
 ## Data Preprocessing
 
@@ -97,7 +106,9 @@ You can see our EDA in the Jupyter notebook called `eda.ipynb` in the `eda` fold
 
 ![Model 1 Banner](Model1Banner.png)
 
-## Choosing a First Model
+## First Model
+
+### Choosing a First Model
 
 At this point, we have two groups of features:
 - Categorical Columns, encoded into some sort of numerical feature as described in the previous section.
@@ -123,11 +134,9 @@ preproc = make_column_transformer(
 )
 ```
 
-The above preprocessor simply applies the given transformer to the columns on the second item in the tuple. As such, all that is left to do is to put this preprocessor into a pipeline alongside our model. Note however, that sklearn cannot support missing values, and so we will conduct mean imputation for these missing values. This is because LinearRegression (based on minimizing mean_square_error) will not get any better nor any worse if a data point with all mean values is added or removed from the dataset. We also provide an illustration of our model below:
+The above preprocessor simply applies the given transformer to the columns on the second item in the tuple. As such, all that is left to do is to put this preprocessor into a pipeline alongside our model. Note however, that sklearn cannot support missing values, and so we will conduct mean imputation for these missing values. This is because LinearRegression (based on minimizing mean_square_error) will not get any better nor any worse if a data point with all mean values is added or removed from the dataset.
 
-![First Model Pipeline](first_model.png)
-
-## Model Evaluation
+### First Model Evaluation
 
 We now do 10-fold cross validaton and report the metrics for each fold.
 
@@ -167,11 +176,11 @@ Same can be said for our `mean_squared_error`. We note that its value is smaller
 
 The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our low value of 0.08 tells us that despite the large number of features, we still have not effectively represented the data. This makes sense - it is very hard to even describe in words what would make one AirBnb listing more highly rated than the other. However, this also gives us plenty of room to improve in our second model.
 
-## Model on Fitting Graph
+### First Model on Fitting Graph
 
 Based on our relatively high MSE, and generally almost identical test and train MSE, MAE, and r2, it is safe to say that our model is not that far along the fitting graph. In other words, our model has not overfitted the data since we see very similar values between the test and train metrics. This is very good for us, as there is much room to add more model complexity - such as by adding more features, or changing to a more complex model - and improve the metrics in our second, better model.
 
-## Model Improvements
+### Model Improvements
 
 Our results are not ideal, we have a relatively high MSE and MAE, and our r^2 score isn't where we would like it to be. This is unfortunate as we were hoping for better results, however, the good part of this is that firstly, we can be pretty confident that we are not overfitting the data and secondly, we have a lot of room for improvement both for our models, and for our machine learning skills as we this will allow us to further develop/apply the things that we are learning in this class to improve our model.
 
@@ -181,6 +190,24 @@ Here are some ways in which we may be able to improve our model:
 - Trying different complexity models such as polynomial regression or neural networks
 - We could try using coalesced features.
 
-## Conclusion and Next Model
+### Conclusion and Next Model
 
 Since our mean squared error of our first model being linear regression is not exactly ideal, we decided that the next potential model we can train and test would be a **neural network**. Since the fit of the linear regression line is producing a unoptimal mean squared error, we believe that a simple linear best fitting line is simply not good enough to fit our supposedly complex data. By using a neural network and messing around with the amount of neurons per hidden layer, the amount of hidden layers, and the many activation functions, we add more depth and complexity in hopes of finding the best fit that captures the relationship between our features while in turn producing a fairly accurate prediction.   
+
+![Model 2 Banner](Model2Banner.jpg)
+
+## Second Model
+
+### Choosing a Second Model
+
+### Hyperparamter 
+
+### Second Model Evaluation
+
+### Second Model on Fitting Graph
+
+###
+
+![Conclusion Banner](ConclusionBanner.jpg)
+
+## Conclusion

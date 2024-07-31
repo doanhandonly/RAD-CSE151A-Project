@@ -1,5 +1,5 @@
 
-![Banner](ProjectBanner.jpg)
+![Banner](ReportBanner.jpg)
 
 # Predicting AirBnB Review Scores: Report
 
@@ -8,17 +8,31 @@ Names:
 - Doanh Nguyen, don012 (at) ucsd (dot) edu 
 - Ryan Batubara, rbatubara (at) ucsd (dot) edu
 
-**NOTE:** This report is also available as a website [here]()
+**NOTE:** This report is also available as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/Report.html)
 
-# Introduction
+## Table of Contents:
+- [Predicting AirBnB Review Scores: Report](#predicting-airbnb-review-scores-report)
+  - [Table of Contents:](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Methods](#methods)
+    - [Data Exploration:](#data-exploration)
+    - [Preprocessing](#preprocessing)
+    - [Model 1](#model-1)
+    - [Model 2](#model-2)
+  - [Statement of Collaboration](#statement-of-collaboration)
+
+## Introduction
 
 Since the end of COVID-19 quarantine, people flocked out of their houses to be in a place that is not their home after a long, long lockdown. AirBnb is usually the first thing that comes to mind for people seeking a more unique, personalized, and intimate housing experience compared to traditional hotels and motels. As AirBnb users, we wanted to take a deeper look into what makes an AirBnb listing special, why is it that one listing can have a much better review score then another listing? It was cool seeing what kind of features managed to push a listing's review score higher and higher while seeing which features had a negative correlation with the review scores. With this information in mind, we can make a more well-informed decision on our next vacation destination.
 
 When it comes to training a predictive model, it is important that it is well optimized and its predictions are as accurate and precise as possible. As industries, academia, and healthcare slowly start adopting more and more Artificial Intelligence decision making tools, and relying heavily on predictive models, it is imperative that there model's predictions reflect the ground truth.
 
-# Methods 
+![Banner](MethodsBanner.jpg)
 
-- <u>Data Exploration:</u> 
+## Methods 
+
+### Data Exploration:
+
 Initially our dataset was fragmented into different city datasets, we webscraped all the US cities dataset and combined them all in pandas. We then took a look at our features and dropped all features that were private information, had unique elements, such as the listing host_id, and any form of url features. There were oddly enough observations that had 0 review scores so we immediately drop those since if the observation has 0 review scores, then we cannot train or test on this observation since the model would not learn anything if the target variable was empty. We then started to fix some of the datatypes observed in some specific features. For instance, host_response_rate and host_acceptance_rate were of str data type that needed to be changed to a float datatype. After dropping all irrelevant features and fixing up the mismatching data types, we began to plot out our data. We began by plotting the usual correlation heatmap and pairplots. Something we were interested in visualizing was the shape of the histogram when we plotted the host joined by year. Of course, we saw the exponential growth a most companies go through when they first start out, the decline during quarantine, and the resurgence of hosts joining AirBNB once lockdown was over. 
 
   We list reasons for dropping these columns:
@@ -50,7 +64,8 @@ connection between this and the target variable, which is review score.
   - `price` should be a float in dollars.
   - `amenities` should be a list.
 
-- <u>Preprocessing:</u>
+### Preprocessing
+
 First step of the preprocessing process was to determine what exactly we should do with observations that had missing data. For features that were numerical, we decided to take the mean of that feature across all observations and use that to replace the missing data. For categorical, it was a bit trickier. We initially thought that we would take the median observation and replace the missing data with it. But decide against it since we might be introducing something that a listing did not have originally. For example, the amenities feature is a list of amenities that consist of all amenities a listing provides. If we took the most appeared amenity and used it to replace a NaN for a listing, that may or may not even have this amenity, we are essentially adding bias. So we decided to simply ignore this feature if a listing is missing it. On the topic of the amenities feature, since it is a list of amenities, the way we encode this other features that is a list of str, we decided to benefit observations that the length of amenities is higher, essentually, the more amenities an observation has, the better. Now that we dealt with NaN data and fixed up the datatype in the data exploration step, we decided to standardize our data to make it easier to train our models.
 
   Amenities was not the only categorical feature we had to encode. Below are the list of categorical features we had to encode and some conclusion we drew from them. 
@@ -75,5 +90,23 @@ First step of the preprocessing process was to determine what exactly we should 
 
     - Host Profile Pic: For `host_profile_pic`, as we did with `room_type`, `property_type`, and `host_response_time`, we used this feature to train our model and then got an r^2 score, this time of 0.0006544772136575228. Similar to `room_type` this is a very low r^2 score which indicates to us that this feature is not very relevant in our model's prediction of a listing's review rating, thus we are not going to be using this feature.
 
-- <u>Model 1</u>
+(Model 1)[Model1Banner.jpg]!
+
+### Model 1
+
 Since our target variable is continous, our first initial model was linear regression. It did not perform very well. Indicating that our data can not fit a linear line. Our data is too sporadic and that attempting to fit a simple line on data that is complex is fruitless no matter how often we optimize our coefficients (which is the only way we can optimize in linear regression), scaling a line would only result in a line. Since our MSE is high, and since the complexity of linear regression is very low, we are simply underfitting our data. Again, we are attempting to fit a line on data that is sparce and not very linear. Based on our relatively high MSE, and generally almost identical test and train MSE, MAE, and r2, it is safe to say that our model is not that far along the fitting graph. In other words, our model has not overfitted the data since we see very similar values between the test and train metrics. This is very good for us, as there is much room to add more model complexity - such as by adding more features, or changing to a more complex model - and improve the metrics in our second, better model.
+
+### Model 2
+
+...
+
+## Statement of Collaboration
+[Beck to table of contents](#table-of-contents)
+
+Our group participated in a lot of collaboration. Rather than having super clear cut roles, we divvied up the work and did what was expected of us while getting constant feedback from the other group members. **This means that while the general descriptions of what we did can be seen below (This is not an exhaustive list), we were all very involved with the other group member's work as well, which means each one of us got a holistic hands-on experience with the entire project and had even participation throughout the whole project. Overall, we were all very involved in the project, and constantly communicated with eachother.**
+
+Ryan Batubara: Feature Engineering, Plotting and Graphing, Report Writing, Model tuning, README, Model Design, Exploratory Data Analysis (Plotting), etc.
+
+Artur Rodrigues: Feature Engineering, Explanations for Plots and Graphs, Report Writing, Banners, Exploratory Data Analysis (Descriptions), etc.
+
+Doanh Nguyen: Feature Engineering, Explanations for Plots and Graphs, Report Writing (Major Role), Exploratory Data Analysis (Descriptions), etc.
