@@ -10,6 +10,23 @@ Names:
 
 **NOTE:** This README is also available as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/)!
 
+## Table of Contents
+- [Predicting AirBnB Review Scores](#predicting-airbnb-review-scores)
+  - [Table of Contents](#table-of-contents)
+  - [Abstract](#abstract)
+  - [Dataset](#dataset)
+  - [Data Preprocessing](#data-preprocessing)
+    - [Dropping Unecessary Columns](#dropping-unecessary-columns)
+    - [Dropping 0 Review Listings](#dropping-0-review-listings)
+    - [Fixing Datatypes](#fixing-datatypes)
+  - [Exploratory Data Analysis](#exploratory-data-analysis)
+  - [Choosing a First Model](#choosing-a-first-model)
+  - [Model Evaluation](#model-evaluation)
+  - [Model on Fitting Graph](#model-on-fitting-graph)
+  - [Model Improvements](#model-improvements)
+  - [Conclusion and Next Model](#conclusion-and-next-model)
+
+
 ## Abstract
 
 With the end of the Covid 19 pandemic, there has been a huge boom in travel and entertainment industries worldwide. With the pandemic still in the minds of many people, travelers may tend to seek more private and personal accommodations such as those on AirBnB. Here, we predict the review score (on a scale of 0 to 100) of an AirBnB posting based on various features, like amenities available, number of reviews, price, and others. The intention is that this may provide AirBnB hosts better insight into what makes a highly rated AirBnB experience.
