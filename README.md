@@ -258,7 +258,7 @@ To summarize, we have the following hyperparamters to tune:
 
 We define a Keras tuner to do so, and we get the following results:
 | Hyperparamter   | Best Value            |
-|:----------------|:----------------------|
+|-----------------|-----------------------|
 | num_layers      | 9                     |
 | num_nodes       | 110                   |
 | activation_func | sigmoid               |
@@ -270,7 +270,7 @@ We define a Keras tuner to do so, and we get the following results:
 
 We now do 10-fold cross validation and report the metrics for each fold.
 |              |   mean_squared_error |   mean_absolute_error |   r2_score |
-|:-------------|---------------------:|----------------------:|-----------:|
+|--------------|----------------------|-----------------------|------------|
 | (0, 'train') |            0.100324  |              0.166675 |  0.187977  |
 | (0, 'test')  |            0.130965  |              0.177124 |  0.0920074 |
 | (1, 'train') |            0.101551  |              0.179577 |  0.196185  |
@@ -295,7 +295,7 @@ We now do 10-fold cross validation and report the metrics for each fold.
 We summarize it by taking the averages below:
 
 |       |   mean_squared_error |   mean_absolute_error |   r2_score |
-|:------|---------------------:|----------------------:|-----------:|
+|-------|----------------------|-----------------------|------------|
 | test  |             0.111618 |              0.18184  |   0.108507 |
 | train |             0.101274 |              0.176667 |   0.19376  |
 
