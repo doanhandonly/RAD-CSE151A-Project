@@ -19,6 +19,15 @@ Names:
     - [Preprocessing](#preprocessing)
     - [Model 1](#model-1)
     - [Model 2](#model-2)
+  - [Results](#results)
+    - [Data Exploration:](#data-exploration-1)
+    - [Preprocessing](#preprocessing-1)
+    - [Model 1](#model-1-1)
+    - [Model 2](#model-2-1)
+  - [Discussion](#discussion)
+    - [Model 1](#model-1-2)
+    - [Model 2](#model-2-2)
+  - [Conclusion](#conclusion)
   - [Statement of Collaboration](#statement-of-collaboration)
 
 ## Introduction
@@ -98,7 +107,31 @@ Since our target variable is continous, our first initial model was linear regre
 
 ### Model 2
 
-...
+
+
+## Results
+![Banner](ResultsBanner.jpg)
+
+### Data Exploration:
+
+### Preprocessing
+
+### Model 1
+
+### Model 2
+
+
+
+## Discussion
+![Banner](DiscussionBanner.jpg)
+
+### Model 1
+
+### Model 2
+
+## Conclusion
+
+
 
 ## Statement of Collaboration
 [Beck to table of contents](#table-of-contents)
