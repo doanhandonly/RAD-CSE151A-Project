@@ -10,6 +10,8 @@ Names:
 
 **NOTE:** This report is also available as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/Report.html)
 
+**To go back to our [Readme.md](README.md), click [here](https://doanhandonly.github.io/RAD-CSE151A-Project/).**
+
 ## Table of Contents:
 - [Predicting AirBnB Review Scores: Report](#predicting-airbnb-review-scores-report)
   - [Table of Contents:](#table-of-contents)
@@ -20,7 +22,7 @@ Names:
     - [Model 1](#model-1)
     - [Model 2](#model-2)
   - [Results](#results)
-    - [Data Exploration:](#data-exploration-1)
+    - [Data Exploration](#data-exploration-1)
     - [Preprocessing](#preprocessing-1)
     - [Model 1](#model-1-1)
     - [Model 2](#model-2-1)
@@ -31,14 +33,15 @@ Names:
   - [Statement of Collaboration](#statement-of-collaboration)
 
 ## Introduction
+[Back to table of contents](#table-of-contents)
 
 Since the end of COVID-19 quarantine, people flocked out of their houses to be in a place that is not their home after a long, long lockdown. AirBnb is usually the first thing that comes to mind for people seeking a more unique, personalized, and intimate housing experience compared to traditional hotels and motels. As AirBnb users, we wanted to take a deeper look into what makes an AirBnb listing special, why is it that one listing can have a much better review score then another listing? It was cool seeing what kind of features managed to push a listing's review score higher and higher while seeing which features had a negative correlation with the review scores. With this information in mind, we can make a more well-informed decision on our next vacation destination.
 
 When it comes to training a predictive model, it is important that it is well optimized and its predictions are as accurate and precise as possible. As industries, academia, and healthcare slowly start adopting more and more Artificial Intelligence decision making tools, and relying heavily on predictive models, it is imperative that there model's predictions reflect the ground truth.
 
 ![Banner](MethodsBanner.jpg)
-
-## Methods 
+## Methods
+[Back to table of contents](#table-of-contents)
 
 ### Data Exploration:
 
@@ -99,47 +102,76 @@ First step of the preprocessing process was to determine what exactly we should 
 
     - Host Profile Pic: For `host_profile_pic`, as we did with `room_type`, `property_type`, and `host_response_time`, we used this feature to train our model and then got an r^2 score, this time of 0.0006544772136575228. Similar to `room_type` this is a very low r^2 score which indicates to us that this feature is not very relevant in our model's prediction of a listing's review rating, thus we are not going to be using this feature.
 
-(Model 1)[Model1Banner.jpg]!
-
 ### Model 1
 
 Since our target variable is continous, our first initial model was linear regression. It did not perform very well. Indicating that our data can not fit a linear line. Our data is too sporadic and that attempting to fit a simple line on data that is complex is fruitless no matter how often we optimize our coefficients (which is the only way we can optimize in linear regression), scaling a line would only result in a line. Since our MSE is high, and since the complexity of linear regression is very low, we are simply underfitting our data. Again, we are attempting to fit a line on data that is sparce and not very linear. Based on our relatively high MSE, and generally almost identical test and train MSE, MAE, and r2, it is safe to say that our model is not that far along the fitting graph. In other words, our model has not overfitted the data since we see very similar values between the test and train metrics. This is very good for us, as there is much room to add more model complexity - such as by adding more features, or changing to a more complex model - and improve the metrics in our second, better model.
 
 ### Model 2
+[Back to table of contents](#table-of-contents)
 
+#TODO
 
-
-## Results
 ![Banner](ResultsBanner.jpg)
+## Results
+[Back to table of contents](#table-of-contents)
 
-### Data Exploration:
+#TODO
+
+### Data Exploration
+[Back to table of contents](#table-of-contents)
+
+#TODO
 
 ### Preprocessing
+[Back to table of contents](#table-of-contents)
+
+#TODO
 
 ### Model 1
+[Back to table of contents](#table-of-contents)
+
+Our mean absolute error for our linear regression was 0.19 for both the train and test prediction, showing that our prediction is 0.19. The similarity between these values tell us that our model has not overfitted, but the large values (considering review ratings go from 0 to 5 only) show us that the model is not very good. Same can be said for mean squared error which was 0.12. The r2_score however tells a very interesting story. The r2_score is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our low value of 0.08 tells us that despite the large number of features, we still have not effectively represented the data. In conclusion, our first model did not perform very well. Our data is too sporadic and that attempting to fit a simple line on data that is complex is fruitless no matter how often we optimize our coefficients (which is the only way we can optimize in linear regression), scaling a line would only result in a line. Since our MSE is high, and since the complexity of linear regression is very low, we are simply underfitting our data. Again, we are attempting to fit a line on data that is sparce and not very linear. Based on our relatively high MSE, and generally almost identical test and train MSE, MAE, and r2, it is safe to say that our model is not that far along the fitting graph. In other words, our model has not overfitted the data since we see very similar values between the test and train metrics. This is very good for us, as there is much room to add more model complexity - such as by adding more features, or changing to a more complex model - and improve the metrics in our second, better model.
 
 ### Model 2
+[Back to table of contents](#table-of-contents)
 
+Since we want to add more complexity to our model in order to fit our sporadic and sparse data, we decided to implement a neural network for our second model. By using a neural network, we gain access to the use of activation functions, allowing us to add non-linearity and complexity to our model to better fit our data. First we set the optimizer hyperparameter and concluded that the best optimizer is lion. We then applied hyperparameter tuning on the amount of neurons, the amount of hidden layer, what type of activation function, and learning rate. Through 100 trials of hyperparameter tuning which took 56 minutes, it concluded that the most optimal neurons per layer is 110, optimal hidden layer is 9, optimal activation function is sigmoid, and optimal learning rate is 5.449514749224714e-05. We ended up with a mean squared error of 0.09 - an improvement over our linear regression model.
 
-
-## Discussion
 ![Banner](DiscussionBanner.jpg)
+## Discussion
+[Back to table of contents](#table-of-contents)
+
+#TODO
 
 ### Model 1
+[Back to table of contents](#table-of-contents)
+
+#TODO
 
 ### Model 2
+[Back to table of contents](#table-of-contents)
+
+#TODO
 
 ## Conclusion
+[Back to table of contents](#table-of-contents)
 
+In this project, we trained two models: First a linear regression model, which prompted us engineer features for categorical columns, and second a neural network, which gave us the model complexity and the ability to hyperparameter tune, allowing us to improve our metrics. Though our best model (the tuned NN) has an MSE of 0.1, MAE of 0.1, and r2 of 0.2, which is not ideal roughly speaking, this is already quite good in the grand scheme of things. 
 
+In other words, our purpose of providing more information to AirBnB customers for what things to look out for a highly rated (i.e. enjoyable) stay, and AirBnb hosts by what things to work on to deliver better rated experiences (i.e. more profitable listings) has largely been achieved by this model. For the customer, one can take a listing they really like, but say with 0 or very few reviews, and use the model to heuristically predict whether this listing has the characteristics and potential to be a good stay. To the host, one can take a couple new listings and predict roughly whether one will do better than the other in terms of review scores. This may also allow hosts to tune their descriptions, pricing, etc and predict how these things will impact the review rating of their listing.
+
+Thus, we conclude that given our metrics, being able to predict a given listing's review score plus minus 0.1 stars is more than enough precision to provide meaningful insights to both parties, and thus the project is largely a success. We note however, that based on personal experiences, that a 0.1 rating difference can be quite substantial, espeically when so many choices is presented to the customer by AirBnb.
 
 ## Statement of Collaboration
-[Beck to table of contents](#table-of-contents)
+[Back to table of contents](#table-of-contents)
 
-Our group participated in a lot of collaboration. Rather than having super clear cut roles, we divvied up the work and did what was expected of us while getting constant feedback from the other group members. **This means that while the general descriptions of what we did can be seen below (This is not an exhaustive list), we were all very involved with the other group member's work as well, which means each one of us got a holistic hands-on experience with the entire project and had even participation throughout the whole project. Overall, we were all very involved in the project, and constantly communicated with eachother.**
+Our group participated in a lot of collaboration. Rather than having super clear cut roles, we divvied up the work and did what was expected of us while getting constant feedback from the other group members. *This means that while the general descriptions of what we did can be seen below (This is not an exhaustive list), we were all very involved with the other group member's work as well, which means each one of us got a holistic hands-on experience with the entire project and had even participation throughout the whole project. Overall, we were all very involved in the project, and constantly communicated with eachother.*
 
 Ryan Batubara: Feature Engineering, Plotting and Graphing, Report Writing, Model tuning, README, Model Design, Exploratory Data Analysis (Plotting), etc.
 
 Artur Rodrigues: Feature Engineering, Explanations for Plots and Graphs, Report Writing, Banners, Exploratory Data Analysis (Descriptions), etc.
 
 Doanh Nguyen: Feature Engineering, Explanations for Plots and Graphs, Report Writing (Major Role), Exploratory Data Analysis (Descriptions), etc.
+
+Thank you for reading our project report.
+[Back to table of contents](#table-of-contents)
