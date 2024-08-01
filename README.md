@@ -42,7 +42,6 @@ Names:
     - [Conclusion and Next Model](#conclusion-and-next-model-1)
   - [Conclusion](#conclusion)
 
-
 ## Abstract
 [Back to table of contents](#table-of-contents)
 
