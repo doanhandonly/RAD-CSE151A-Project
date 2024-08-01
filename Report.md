@@ -61,15 +61,14 @@ Thus, as our model serves a real purpose to both the customer and host, it is im
 
 This project will be based on data gathered by [Inside AirBnb](https://insideairbnb.com/get-the-data/) May to June 2024. To keep our analysis more focused, we will only be analyzing AirBnB listings from the United States. Since Inside AirBnB only offers datasets per city, we have downloaded all US cities with AirBnB listings and combined them into one csv file. 
 
-*We now had around 250,000 rows of data and 80 features.*
-
+> We now had around `250,000` rows of data and `80` features.
 
 Due to the size of this file, [Inside AirBnB reposting policies](https://insideairbnb.com/data-policies/), and [Github Data storage policies](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-storage-and-bandwidth-usage), we will not be uploading this combined file to the repository. That said, the combined dataset is available [here](https://drive.google.com/file/d/1DwNaHBBgTesytLoGn23QZMURfK41Du2K/view?usp=sharing), but requires a UCSD account.
 
 #### Data Cleaning
 [Back to table of contents](#table-of-contents)
 
-After fixing some of the data's datatypes, we dropped all listing with 0 reviews, since it is not well defined how a `NaN` reivew score should behave as training data. We then dropped some features that were irrelevant to our project. We show reasons for dropping them below:
+After fixing some of the data's datatypes, we dropped all listing with `0` reviews, since it is not well defined how a `NaN` reivew score should behave as training data. We then dropped some features that were irrelevant to our project. We show reasons for dropping them below:
 
  - `All URL`: Unique elements for each listing. Does not contribute anything when predicting the review score.
 
@@ -129,24 +128,24 @@ We start by looking at the distribution of all the review scores:
 
 ![Review Scores Histogram](figures/ReviewHistogram.png)
 
-The values actually range from 0 to 5, but we zoom in on this region as >90% of the values are here. Clearly, all of the review scores are very similar. Thus, moving foward, **we will use `review_scores_rating`, the average of all other review features, as our model's target variable.**
+The values actually range from `0` to `5`, but we zoom in on this region as `>90%` of the values are here. Clearly, all of the review scores are very similar. Thus, moving foward, **we will use `review_scores_rating`, the average of all other review features, as our model's target variable.**
 
-One feature we might think is correlated to rating is price:
+One feature we might think is correlated to rating is `price`:
 
 ![Price vs Rating](figures/PriceVsRating.png)
 
-It appears that price increases as the ratings go up, with many exceptions. There does not seem to be any general trend though, except that there are vertical lines where the ratings are integer values - this is probably from all the listings with very small reviews. Even in these lines there is not general relationship it appears.
+It appears that `price` increases as the ratings go up, with many exceptions. There does not seem to be any general trend though, except that there are vertical lines where the ratings are integer values - this is probably from all the listings with very small reviews. Even in these lines there is not a general relationship it appears.
 
 > In brief, there does not appear to be a single numerical feature with a clear-cut linear or polynomial relationship with review scores. So we turn our EDA to exploring non-numerical columns.
 
 #### Non-Numeric Feature Visualizations
 [Back to table of contents](#table-of-contents)
 
-One idea is that a host's age on the platform would overall mean higher ratings (from experience):
+One idea is that a `host's age` on the platform would overall mean higher ratings (from experience):
 
 ![Host Since vs Rating](figures/HostSinceVsRating.png)
 
-In the above graph, the number of weeks that a host has been on the platform is on the x-axis versus the `review_scores_rating` feature on the y-axis. We can see a small, but not insignificant, positive correlation between the two, which indicates that the longer a host has been on the platform, the higher their review rating tends to be, but nothing high correlation.
+In the above graph, the `number of weeks` that a host has been on the platform is on the x-axis versus the `review_scores_rating` feature on the y-axis. We can see a small, but not insignificant, positive correlation between the two, which indicates that the longer a host has been on the platform, the higher their review rating tends to be, but nothing high correlation.
 
 As an aside, it is interesting to see when US hosts signed up for AirBnb:
 
@@ -159,9 +158,9 @@ Going back to the model, we seek to explore how other non-numerical data relate 
 ### Preprocessing
 [Back to table of contents](#table-of-contents)
 
-Our dataset contains many text-columns, which we approached by counting the most prevalent words of, and comparing their prevalence amongst all listings versus listings with 4.9+ rating at least 100 reviews, which we arbitrarily define as **popular listings**.
+Our dataset contains many text-columns, which we approached by counting the most prevalent words of, and comparing their prevalence amongst all listings versus listings with a `4.9+` rating and at least `100` reviews, which we arbitrarily define as **popular listings**.
 
-For example, this approach yields us the following visualization for words in the listing description:
+For example, this approach yields us the following visualization for words in the listing `description`:
 
 ![Description Words](figures/DescriptionWords.png)
 
@@ -171,7 +170,7 @@ We decided to take all the non-filler words, and encode a feature whose value is
 
 Indeed, this looks like a promising feature, as there is a clear positive slope, and listings with many values are exceedingly rare. Continuing our feature engineering in this direction, we find that this sort of "word counting" trick works for all the text-based features.
 
-There is one last feature worth mentioning in our feature engineering process: `amenities`. Amenities is a list of host-reported amenities from 'Jacuzzi' to 'Suave Shampoo'. Interestingly, taking the length of this list makes for a pretty good feature:
+There is one last feature worth mentioning in our feature engineering process: `amenities`. `amenities` is a list of host-reported amenities from 'Jacuzzi' to 'Suave Shampoo'. Interestingly, taking the length of this list makes for a pretty good feature:
 
 ![Amenities vs Rating](figures/AmenitiesVsRating.png)
 
@@ -184,7 +183,7 @@ The last step of the preprocessing was to determine what exactly we should do wi
 
 For features that were numerical, we decided to take the mean of that feature across all observations and use that to replace the missing data. For categorical, it was a bit trickier. We initially thought that we would take the median observation and replace the missing data with it. But we decided against it since we might be introducing something that a listing did not have originally. 
 
-For example, the amenities feature is a list of amenities that consist of all amenities a listing provides. If we took the most appeared amenity and used it to replace a `NaN` for a listing, that may or may not even have this amenity, we are essentially adding bias. So we decided to simply ignore this feature if a listing is missing it.
+For example, the `amenities` feature is a list of amenities that consists of all the amenities a listing provides. If we took the most appeared amenity and used it to replace a `NaN` for a listing, that may or may not even have this amenity, we are essentially adding bias. So we decided to simply ignore this feature if a listing is missing it.
 
 Thus, our preprocessing can be summarized using the following preprocessing `sklearn` `pipeline`:
 
@@ -203,15 +202,15 @@ preproc = make_column_transformer(
 
 As you can see, `amenities` is not the only column that gets a special kind of transformer. For more details, see our [model.ipynb](model/model.ipynb). We list down some of the more interesting ones not mentioned above:
 
-- `Host Verifications`: The column `host_verifications` tells the user which method of communication of the host is vertified. To work with this feature, we decided to encode the length of all the list, since it would be difficult to determine whether it is more valuable to have one type of verification than the other, but it is relatively sensible that more verifications imply a more communicative host. We then plotted a regression plot and based on the graph, and we observed that the relationship between `host_vertifications` and `review_scores_rating` is pretty flat, indicating that `host_vertification` has a weak correlation to `review_scores_rating`, making it a unreliable feature. Hence we are dropping it i.e. not using it in our model. This makes sense, since someone is unlikely to rate a listing higher just because say the host is accesible through two email adresses instead of one.
+- `Host Verifications`: The column `host_verifications` tells the user which methods of communication the host is verified with. To work with this feature, we decided to encode the length of the list, since it would be difficult to determine whether it is more valuable to have one type of verification than the other, but it is relatively sensible that more verifications imply a more communicative host. We then plotted a regression plot and based on the graph, observed that the relationship between `host_vertifications` and `review_scores_rating` is pretty flat, indicating that `host_vertification` has a weak correlation to `review_scores_rating`, making it an unreliable feature, hence we are dropping it, i.e. not using it in our model. This makes sense, since someone is unlikely to rate a listing higher just because say the host is accesible through two email adresses instead of one.
 
-- `Property Type`: When it comes to the `property_type` feature, we trained a linear regression model using only this feature and when we look at the `r^2 score` for our model, we get 0.02993098364575919. The `r^2 score` can be seen as a continuous value in the interval [0, 1] which indicates how good this feature is at helping our model predict the reivew rating for a listing where 0 means bad and 1 means good. The score we got isn't good but its not like this feature is insignificant either. This is significant, as there are 125 different property types, so including a `OneHotEncoding()` of this feature will introduce 125 new features!
+- `Property Type`: When it comes to the `property_type` feature, we trained a linear regression model using only this feature and when we look at the `r^2 score` for our model, we get `0.02993098364575919`. The `r^2 score` can be seen as a continuous value in the interval [0, 1] which indicates how good this feature is at helping our model predict the reivew rating for a listing where 0 means bad and 1 means good. The score we got isn't good but its not like this feature is insignificant either. This is significant, as there are `~125` different property types, so including a `OneHotEncoding()` of this feature will introduce `~125` new features!
 
-- `Host Response Time` and `Rate`: For `host_response_time`, as we did with `room_type` and `property_type`, we used this feature to train a linear regression model and then got an `r^2 score`, this time of 0.002128186367516438. Similar to `room_type` this is a very low `r^2 score` which indicates to us that this feature is not very relevant in our model's prediction of a listing's review rating, thus we are not going to be using this feature. This makes sense - there are only four classes of values in this column: within an hour, few hours, a day, and a few days. These tell us almost nothing. For example, a listing that is only popular in the summer may have a host that responds quickly in the summer, but does not even open AirBnb in the winter - such hosts may have a response time of a few days or more despite delivering highly rated listings. Thus, this is an example of a feature that did not make the cut for our model.
+- `Host Response Time` and `Rate`: For `host_response_time`, as we did with `room_type` and `property_type`, we used this feature to train a linear regression model and then got an `r^2 score`, this time of `0.002128186367516438`. Similar to `room_type` this is a very low `r^2 score` which indicates to us that this feature is not very relevant in our model's prediction of a listing's review rating, thus we are not going to be using this feature. This makes sense - there are only four classes of values in this column: within an hour, few hours, a day, and a few days. These tell us almost nothing. For example, a listing that is only popular in the summer may have a host that responds quickly in the summer, but does not even open AirBnb in the winter - such hosts may have a response time of a few days or more despite delivering highly rated listings. Thus, this is an example of a feature that did not make the cut for our model.
 
-- `Host Profile Pic`: For `host_profile_pic`, as we did with `room_type`, `property_type`, and `host_response_time`, we used this feature to train our model and then got an `r^2 score`, this time of 0.0006544772136575228. Similar to `room_type` this is a very low `r^2 score` which indicates to us that this feature is not very relevant in our model's prediction, probably because around 90% of hosts have a profile picture. As a remark, this makes hosts without any profile picture particularly shady!
+- `Host Profile Pic`: For `host_profile_pic`, as we did with `room_type`, `property_type`, and `host_response_time`, we used this feature to train our model and then got an `r^2 score`, this time of `0.0006544772136575228`. Similar to `room_type` this is a very low `r^2 score` which indicates to us that this feature is not very relevant in our model's prediction, probably because around 90% of hosts have a profile picture. As a remark, this makes hosts without any profile picture particularly shady!
 
-> Hence, with a ludicrous 217,000 rows and 159 features, we are ready to train some models!
+> Hence, with a ludicrous `217,000` rows and `159` features, we are ready to train some models!
 
 ### Model 1
 [Back to table of contents](#table-of-contents)
@@ -226,7 +225,7 @@ model = make_pipeline(
 )
 ```
 
-We then do a 10-fold cross validation using the following code:
+We then do a `10-fold cross validation` using the following code:
 ```python
 X = df.drop(columns=review_cols)
 y = df['review_scores_rating']
@@ -259,7 +258,7 @@ for i, (train_index, test_index) in enumerate(kf.split(X)):
 ### Model 2
 [Back to table of contents](#table-of-contents)
 
-For our second model, we opted for a Sequential Neural Network featuring `LeakyRelu` activation filters. To choose the hyperparameters, we conducted three grid searches, the first two to reduce the size of the problem space for the third one.
+For our second model, we opted for a Sequential Neural Network featuring `LeakyRelu` activation functions. To choose the hyperparameters, we conducted three grid searches, the first two to reduce the size of the problem space for the third one.
 
 First, we searched through every possible `keras` optimizer and learning `rate` order of magnitude:
 
@@ -310,6 +309,7 @@ def build_hp_NN(hp):
 ```
 
 The best hyperparameters are as follows:
+
 | Hyperparamter   | Best Value            |
 |-----------------|-----------------------|
 | num_layers      | 9                     |
@@ -339,7 +339,7 @@ def make_best_NN():
     return model
 ```
 
-We then run 10-fold cross validation to evaluate the model:
+We then run `10-fold cross validation` to evaluate the model:
 
 ```python
 scores2 = {}
@@ -371,7 +371,7 @@ for i, (train_index, test_index) in enumerate(kf.split(X_copy)):
     }
 ```
 
-Now that we have implemented our models, we report the results of our 10-fold validations.
+Now that we have implemented our models, we report the results of our `10-fold cross validations`.
 
 ![Banner](ResultsBanner.jpg)
 ## Results
@@ -414,7 +414,7 @@ We summarize it by taking the averages below:
 | test  |             0.126845 |              0.198613 |  0.0857167 |
 | train |             0.126557 |              0.198473 |  0.0878153 |
 
-We also attach the average differences between each metric between train and test:
+We also attach the average differences between each metric's train and test:
 
 |       |   mean_squared_error |   mean_absolute_error |   r2_score |
 |-------|----------------------|-----------------------|------------|
@@ -455,7 +455,7 @@ We summarize it by taking the averages below:
 | test  |             0.111618 |              0.18184  |   0.108507 |
 | train |             0.101274 |              0.176667 |   0.19376  |
 
-We also attach the average differences between each metric between train and test:
+We also attach the average differences between each metric's train and test:
 
 |       |   mean_squared_error |   mean_absolute_error |   r2_score |
 |-------|----------------------|-----------------------|------------|
@@ -468,9 +468,9 @@ This concludes our results.
 [Back to table of contents](#table-of-contents)
 
 We split the discussion into three subsections for each model:
-1. General Metric Discussion
-2. Model on Fitting Graph
-3. Improvements and Next Steps
+1. `General Metric Discussion`
+2. `Model on Fitting Graph`
+3. `Improvements and Next Steps`
 
 ### Model 1
 [Back to table of contents](#table-of-contents)
@@ -478,7 +478,7 @@ We split the discussion into three subsections for each model:
 We start by motivating why we start with linear regression. Linear regression is a hyperparameterless model - besides feature engineering. This means the model has 3 main benefits:
 
 1. It is relatively simple, and features almost entirely dictate how well the model performs. This allows us to focus on enginnering good, relevant features for our second, more complicated model.
-2. LinearRegression allows us to check the coefficient of every variable, and when standardized or normalized, a sense of which features play the largest role in determining the review score.
+2. Linear Regression allows us to check the coefficient of every variable, and when standardized or normalized, a sense of which features play the largest role in determining the review score.
 3. It is extremely fast and easy to implement LinearRegression, allowing us to test many different features and encodings quickly.
 
 #### General Metric Discussion
@@ -511,7 +511,7 @@ min     |   0.000027
 75%     |   0.030899
 max     |   0.153812
 
-We notice the average value is 0.021, meaning our columns do have an impact on the review score to the 0.01 order of magnitude. Here are the top 10 features (as indexes) and their coefficients:
+We notice the average value is 0.021, meaning our columns do have an impact on the review score to the 0.01 order of magnitude. Then, to identify the features that contributed most to our regression, we can sort the features from largest to smallest absolute value coefficient. Here are the top 10 features (as indexes) and their coefficients:
 
 154    0.153812
 63     0.130499
@@ -524,7 +524,7 @@ We notice the average value is 0.021, meaning our columns do have an impact on t
 87     0.075408
 101    0.067546
 
-In order to do more in-depth coefficient analysis, we need to look at what each column actually represents. Using our pipeline, we list down the columns:
+In order to do more in-depth coefficient analysis, we need to look at what each column actually represents (not just their indexes). Using our pipeline, we list down the columns:
 
 - 1 substring feature (from `name`)
 - 1 substing feature (from `description`)
@@ -535,19 +535,19 @@ In order to do more in-depth coefficient analysis, we need to look at what each 
 - 1 length feature (from `amenities`)
 - 25 numeric features (as listed in `numeric_features`)
 
-We discuss the top ten features below:
+We discuss the top ten features below (citing their index as well):
 
 - Feature 154 (`calculated_host_listings_count`):
 It makes quite a lot of intuitive sense why this feature would be the most impactful, the more reviews a host has, the more likely it is that one of their listings is going to be a high rating listing. The longer a host is on the platform, the more time they have to accumulate reviews. This is definitely a feature that we could try to feature engineer further to give our model more to work with.
 
 - Feature 155 (`number_of_reviews_l30d`):
-The number of reviews a listing has in the last 30 days seems to have played quite a significant role in the model's predictions. This makes sense as, similar to calculated_host_listings_count, the more reviews a listing has in the last 30 days, the more likely that listing is to have a good rating since people wouldn't want to keep booking and reviewing a place that is poorly rated.
+The number of reviews a listing has in the last 30 days seems to have played quite a significant role in the model's predictions. This makes sense as, similar to `calculated_host_listings_count`, the more reviews a listing has in the last 30 days, the more likely that listing is to have a good rating since people wouldn't want to keep booking and reviewing a place that is poorly rated.
 
-- Feature 130 (`some room_type`):
+- Feature 130 (some `room_type`):
 We see that there is a room type that reigns supreme over all of the other room types. This would make sense as AirBnB is a service that offers practical temporary housing, so people who just need a quick place to recharge and rest are in need of a specific kind of room rather than the other possible room types.
 
 - Feature 63, 86, 90, 93, 88, 87, 101 (some `property_types`):
-These features are part of our one hot encoded feature property_type, so we know that there are specific property types that are weighted very heavily. This, once again, makes a lot of sense since most users are only going ot be in search of a handful of different property types, rather than there being a uniform distribution over the 125 property types.
+These features are part of our one hot encoded feature `property_type`, so we know that there are specific property types that are weighted very heavily. This, once again, makes a lot of sense since most users are only going ot be in search of a handful of different property types, rather than there being a uniform distribution over the `125` property types.
 
 #### Improvements and Next Steps
 [Back to table of contents](#table-of-contents)
@@ -558,7 +558,7 @@ Here are some ways in which we may be able to improve our model:
 - Trying different complexity models such as polynomial regression or neural networks
 - We could try using coalesced features.
 
-Since our mean squared error of our first model being linear regression is not exactly ideal, we decided that the next potential model we can train and test would be a neural network. Since the fit of the linear regression line is producing a unoptimal mean squared error, we believe that a simple linear best fitting line is simply not good enough to fit our supposedly complex data. By using a neural network and messing around with the amount of neurons per hidden layer, the amount of hidden layers, and the many activation functions, we add more depth and complexity in hopes of finding the best fit that captures the relationship between our features while in turn producing a fairly accurate prediction.
+Since our mean squared error of our first model being linear regression is not exactly ideal, we decided that the next potential model we can train and test would be a neural network. Since the fit of the linear regression line is producing an unoptimal mean squared error, we believe that a simple linear best fitting line is simply not good enough to fit our relatively complex data. By using a neural network and messing around with the amount of neurons per hidden layer, the amount of hidden layers, and the many activation functions, we add more depth and complexity in hopes of finding the best fit that captures the relationship between our features while in turn producing a fairly accurate prediction.
 
 ### Model 2
 [Back to table of contents](#table-of-contents)
@@ -576,51 +576,53 @@ As such, a neural network comes to mind for our second model. Here are three rea
 
 #### Hyperparamter Tuning
 
-Before discussing the results, we remark that through `100` trials of hyperparameter tuning which took hours, it concluded that the most optimal neurons per layer is `110`, optimal hidden layer is `9`, optimal activation function is `sigmoid`, and optimal learning rate is `5.449514749224714e-05`. We ended up with a mean squared error of 0.09 - an improvement over our linear regression model. More details can be found in our [Methods section](#methods).
+Before discussing the results, we remark that through `100` trials of hyperparameter tuning, which took hours, it concluded that the most optimal neurons per layer is `110`, optimal hidden layer is `9`, optimal activation function is `sigmoid`, and optimal learning rate is `5.449514749224714e-05`. We ended up with a mean squared error of 0.09 - an improvement over our linear regression model. More details can be found in our [Methods section](#methods).
 
 #### General Metric Description
 [Back to table of contents](#table-of-contents)
 
 We start with the `mean_absolute_error`, which tells us that on average our predicted rating is about `0.17` off for both the test and train cases. The similarity between these values tell us that our model has not overfitted, and though the values are a noticeable improvement compared to our first model, it is not ideal either. This shows how complex predicting review scores is.
 
-Same can be said for our `mean_squared_error`. We note that its value is smaller than the `mean_absolute_error` being average `0.10`, which makes sense as it is roughly the square root of the `mean_absolute_error`.
+Same can be said for our `mean_squared_error`. We note that its value is smaller than the `mean_absolute_error`, being on average `0.10`, which makes sense as it is roughly the square of the `mean_absolute_error`.
 
-The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our value of `0.19` for train and `0.10` for test shows that our data is right on the edge of the fitting graph, meaning it is right under from overfitting. This is a marked improvement to our linear regression `r^2` of about `0.8`, meaning our second model is a definite improvement.
+The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our value of `0.19` for train and `0.10` for test shows that our data is right on the edge of the fitting graph, meaning it is on the verge of overfitting. This is a marked improvement to our linear regression `r^2` of about `0.8`, meaning our second model is a definite improvement.
 
 #### Model on Fitting Graph
 [Back to table of contents](#table-of-contents)
 
-Based on the similarity of our `MSE` and `MAE`, we know that our model has not overfitted the training data. However, the large difference between `r2_scores` tells us that our model is much father along - or more complex - than our linear regression model on the fitting graph. In other words, adding more layer or complexity may run the risk of overfitting, though we are clearly not there yet. This is very good for us, since it means that our model is quite generalizable (as the 10 folds contain similar values), but also quite difficult as adding large amounts of complexity is likely going to cause us to overfit our data.
+Based on the similarity of our `MSE` and `MAE`, we know that our model has not overfitted the training data. However, the large difference between `r2_scores` tells us that our model is much futher along - or more complex - than our linear regression model on the fitting graph. In other words, adding more layer or complexity may run the risk of overfitting, though we are clearly not there yet. This is very good for us, since it means that our model is quite generalizable (as the 10 folds contain similar values), but also quite difficult as adding large amounts of complexity is likely going to cause us to overfit our data.
 
 #### Improvements and Next Steps
 [Back to table of contents](#table-of-contents)
 
-Compared to our first model, the second model has much higher model complexity, and there is evidence (as discusses in the r2_scores above) that we are approaching the overfitting mark, though we are not there yet. This leaves us at a rather difficult stalemate: We have engineered a lot of features, have a large amount of data, and high model complexity, with optimized hyperparameters and a very small learning rate. This means that any potential model improvements probably needs to involve a major change in how we do our model.
+Compared to our first model, the second model has much higher model complexity, and there is evidence (as discussed in the r2_scores above) that we are approaching the overfitting mark, though we are not there yet. This leaves us at a rather difficult stalemate: We have engineered a lot of features, have a large amount of data, and high model complexity, with optimized hyperparameters and a very small learning rate. This means that any potential model improvements probably needs to involve a major change in how we do our model.
 
 Here are some ways in which we may be able to improve our model:
-- Changing the type of NN layers. Right now, we have a "default" NN with backpropagation and only Dense layers with LeakyRelu in between. Perhaps trying different more complicated layers such as convolution or pooling layers may better bring out the correlations in the data.
-- Changing the type of activation function dynamically. Mathematically, each activation function is ideal for a very specific type of identification. Perhaps changing activation functions between layers may help bring out the patterns in the data.
-- Doing more feature engineering. Some features, such as amenities, are only explored by length. Though it can be argued that there isn't much for us to do here, (since how much does amenities, for example, really impact the reviews of a listing?), it also means we have not tapped into this data's full potential. However, a full NLP stack will be necessary for this, which comes with concerns of overfitting and bias.
+- `Changing the type of NN or NN layers.` Right now, we have a "default" NN with backpropagation and only Dense layers with LeakyRelu in between. Perhaps trying different and more complicated layers such as convolution or pooling layers may better bring out the correlations in the data.
+- `Changing the type of activation function.` Mathematically, each activation function is ideal for a very specific type of identification. Perhaps changing activation functions between layers may help bring out the patterns in the data.
+- `Doing more feature engineering.` Some features, such as amenities, are only explored by length. Though it can be argued that there isn't much for us to do here, (since how much does amenities, for example, really impact the reviews of a listing?), it also means we have not tapped into this data's full potential. However, a full NLP stack will be necessary for this, which comes with concerns of overfitting and bias.
 
 ## Conclusion
 [Back to table of contents](#table-of-contents)
 
-In this project, we trained two models: First a linear regression model, which prompted us engineer features for categorical columns, and second a neural network, which gave us the model complexity and the ability to hyperparameter tune, allowing us to improve our metrics. Though our best model (the tuned NN) has an MSE of 0.1, MAE of 0.1, and r2 of 0.2, which is not ideal roughly speaking, this is already quite good in the grand scheme of things. 
+In this project, we trained two models: First a linear regression model, which prompted us to engineer features for categorical columns, and second a neural network, which gave us the model complexity and the ability to hyperparameter tune, allowing us to improve our metrics. Though our best model (the tuned NN) has an `MSE` of `0.1`, `MAE` of `0.1`, and `r2` of `0.2`, which is not ideal roughly speaking, this is already quite good in the grand scheme of things. 
 
-In other words, our purpose of providing more information to AirBnB customers for what things to look out for a highly rated (i.e. enjoyable) stay, and AirBnb hosts by what things to work on to deliver better rated experiences (i.e. more profitable listings) has largely been achieved by this model. For the customer, one can take a listing they really like, but say with 0 or very few reviews, and use the model to heuristically predict whether this listing has the characteristics and potential to be a good stay. To the host, one can take a couple new listings and predict roughly whether one will do better than the other in terms of review scores. This may also allow hosts to tune their descriptions, pricing, etc and predict how these things will impact the review rating of their listing.
+In other words, our purpose of providing more information to AirBnB customers for what things to look out for a highly rated (i.e. enjoyable) stay, and AirBnb hosts by what things to work on to deliver better rated experiences (i.e. more profitable listings) has largely been achieved by this model. For the customer, one can take a listing they really like, but say with 0 or very few reviews, and use the model to heuristically predict whether this listing has the characteristics and potential to be a good stay. For the host, one can take a couple new listings and predict roughly whether one will do better than the other in terms of review scores. This may also allow hosts to tune their descriptions, pricing, etc and predict how these things will impact the review rating of their listing.
 
-Thus, we conclude that given our metrics, being able to predict a given listing's review score plus minus 0.1 stars is more than enough precision to provide meaningful insights to both parties, and thus the project is largely a success. We note however, that based on personal experiences, that a 0.1 rating difference can be quite substantial, espeically when so many choices is presented to the customer by AirBnb.
+Thus, we conclude that given our metrics, being able to predict a given listing's review score plus minus `0.1` stars is more than enough precision to provide meaningful insights to both parties, and thus the project is largely a success. We note, however, that based on personal experiences, that a `0.1` rating difference can be quite substantial, especially when so many choices are presented to the customer by AirBnb.
+
+We had extensively described potential next steps in the previous section, but the general gist is to try a new type `Neural Network` with more in-depth engineered features, as predicting AirBnb review scores is more complicated than it seems!
 
 ## Statement of Collaboration
 [Back to table of contents](#table-of-contents)
 
-Our group participated in a lot of collaboration. Rather than having super clear cut roles, we divvied up the work and did what was expected of us while getting constant feedback from the other group members. *This means that while the general descriptions of what we did can be seen below (This is not an exhaustive list), we were all very involved with the other group member's work as well, which means each one of us got a holistic hands-on experience with the entire project and had even participation throughout the whole project. Overall, we were all very involved in the project, and constantly communicated with eachother.*
+Our group participated in a lot of collaboration. Rather than having clear cut roles, we divvied up the work and did what was expected of us while getting constant feedback from the other group members. *This means that while the general descriptions of what we did can be seen below (note: this is not an exhaustive list), we were all very involved with the other group member's work as well, which means each one of us got a holistic hands-on experience with the entire project and had even participation throughout the whole project. Overall, we were all very involved in the project, and constantly communicated with each other.*
 
-Ryan Batubara: Feature Engineering, Plotting and Graphing, Report Writing, Model tuning, README, Model Design, Exploratory Data Analysis (Plotting), etc.
+- **Ryan Batubara:** Feature Engineering, Plotting and Graphing, Report Writing, Model tuning, README, Model Design, Exploratory Data Analysis (Plotting), etc.
 
-Artur Rodrigues: Feature Engineering, Explanations for Plots and Graphs, Report Writing, Banners, Exploratory Data Analysis (Descriptions), etc.
+- **Artur Rodrigues:** Feature Engineering, Explanations for Plots and Graphs, Report Writing, Banners, Exploratory Data Analysis (Descriptions), etc.
 
-Doanh Nguyen: Feature Engineering, Explanations for Plots and Graphs, Report Writing (Major Role), Exploratory Data Analysis (Descriptions), etc.
+- **Doanh Nguyen:** Feature Engineering, Explanations for Plots and Graphs, Report Writing (Major Role), Exploratory Data Analysis (Descriptions), etc.
 
 Thank you for reading our project report.
 [Back to table of contents](#table-of-contents)

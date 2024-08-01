@@ -92,9 +92,9 @@ connection between this and the target variable, which is review score.
 ### Dropping 0 Review Listings
 [Back to table of contents](#table-of-contents)
 
-Since we are trying to predict AirBnB review scores (for the purpose of finding out what makes a good review score), we will be dropping all listings that have 0 reviews. This is because, from the perspective of our model, these rows do not provide any meaningful information into what makes a highly rated listing (since their review scores are `NaN`, and are missing by design).
+Since we are trying to predict AirBnB review scores (for the purpose of finding out what makes a good review score), we will be dropping all listings that have `0` reviews. This is because, from the perspective of our model, these rows do not provide any meaningful information into what makes a highly rated listing (since their review scores are `NaN`, and are missing by design).
 
-We remark that this still leaves us with almost 200 thousand rows, so the data remains large enough for a model.
+We remark that this still leaves us with `~200,000` rows and many features, so the data remains large enough for a model.
 
 ### Fixing Datatypes
 [Back to table of contents](#table-of-contents)
@@ -133,7 +133,7 @@ At this point, we have two groups of features:
 
 We plan to put all of these features into a LinearRegression model from sklearn. There are three main reasons a LinearRegression model is ideal for our base model:
 1. It is relatively simple, and features almost entirely dictate how well the model performs. This allows us to focus on enginnering good, relevant features for our second, more complicated model.
-2. LinearRegression allows us to check the coefficient of every variable, and when standardized or normalized, a sense of which features play the largest role in determining the review score.
+2. Linear Regression allows us to check the coefficient of every variable, and when standardized or normalized, a sense of which features play the largest role in determining the review score.
 3. It is extremely fast and easy to implement LinearRegression, allowing us to test many different features and encodings quickly.
 
 We summarize our preprocessing and features below:
@@ -156,7 +156,7 @@ The above preprocessor simply applies the given transformer to the columns on th
 ### First Model Evaluation
 [Back to table of contents](#table-of-contents)
 
-We now do 10-fold cross validaton and report the metrics for each fold.
+We now do `10-fold cross validaton` and report the metrics for each fold.
 
 |              |   mean_squared_error |   mean_absolute_error |   r2_score |
 |:-------------|---------------------:|----------------------:|-----------:|
@@ -188,21 +188,21 @@ We summarize it by taking the averages below:
 | test  |             0.126845 |              0.198613 |  0.0857167 |
 | train |             0.126557 |              0.198473 |  0.0878153 |
 
-We will now interpret the above metrics in more detail. We start with the `mean_absolute_error`, which tells us that on average our predicted rating is 0.19 off for both the test and train cases. The similarity between these values tell us that our model has not overfitted, but the large values (considering review ratings go from 0 to 5 only) show us that the model is not very good.
+We will now interpret the above metrics in more detail. We start with the `mean_absolute_error`, which tells us that on average our predicted rating is `0.19` off for both the test and train cases. The similarity between these values tell us that our model has not overfitted, but the large values (considering review ratings go from 0 to 5 only) show us that the model is not very good.
 
 Same can be said for our `mean_squared_error`. We note that its value is smaller than the `mean_absolute_error`, which makes sense as it is roughly the square root of the `mean_absolute_error`.
 
-The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our low value of 0.08 tells us that despite the large number of features, we still have not effectively represented the data. This makes sense - it is very hard to even describe in words what would make one AirBnb listing more highly rated than the other. However, this also gives us plenty of room to improve in our second model.
+The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our low value of `0.08` tells us that despite the large number of features, we still have not effectively represented the data. This makes sense - it is very hard to even describe in words what would make one AirBnb listing more highly rated than the other. However, this also gives us plenty of room to improve in our second model.
 
 ### First Model on Fitting Graph
 [Back to table of contents](#table-of-contents)
 
-Based on our relatively high MSE, and generally almost identical test and train MSE, MAE, and r2, it is safe to say that our model is not that far along the fitting graph. In other words, our model has not overfitted the data since we see very similar values between the test and train metrics. This is very good for us, as there is much room to add more model complexity - such as by adding more features, or changing to a more complex model - and improve the metrics in our second, better model.
+Based on our relatively high `MSE`, and generally almost identical test and train `MSE`, `MAE`, and `r2`, it is safe to say that our model is not that far along the fitting graph. In other words, our model has not overfitted the data since we see very similar values between the test and train metrics. This is very good for us, as there is much room to add more model complexity - such as by adding more features, or changing to a more complex model - and improve the metrics in our second, better model.
 
 ### Model Improvements
 [Back to table of contents](#table-of-contents)
 
-Our results are not ideal, we have a relatively high MSE and MAE, and our r^2 score isn't where we would like it to be. This is unfortunate as we were hoping for better results, however, the good part of this is that firstly, we can be pretty confident that we are not overfitting the data and secondly, we have a lot of room for improvement both for our models, and for our machine learning skills as we this will allow us to further develop/apply the things that we are learning in this class to improve our model.
+Our results are not ideal, we have a relatively high `MSE` and `MAE`, and our `r^2` score isn't where we would like it to be. This is unfortunate as we were hoping for better results, however, the good part of this is that firstly, we can be pretty confident that we are not overfitting the data and secondly, we have a lot of room for improvement both for our models, and for our machine learning skills as we this will allow us to further develop/apply the things that we are learning in this class to improve our model.
 
 Here are some ways in which we may be able to improve our model:
 - Increasing the number of features
@@ -231,7 +231,7 @@ Our first model has taught us a few things:
 As such, a neural network comes to mind for our second model. Here are three reasons why a neural network appears to be the next best step:
 
 1. The data and features are extremely complicated, so simple kernels like linear or polynomial transformations is insufficeint to describe a feature's relationship with the review scores. A NN will help deal with this.
-2. We have an incredible number of features (159), and NNs excel at finding general patterns from a large number of features and combining them together (this means we will need a lot of layers with a lot of nodes each).
+2. We have an incredible number of features (`159`), and NNs excel at finding general patterns from a large number of features and combining them together (this means we will need a lot of layers with a lot of nodes each).
 3. The data is extremely large, meaning that there is much room for our model to explore the data before it overfits. This reduces the high complexity downside of NNs.
 
 Since we are reusing our preprocessing pipeline from the first model (see above), we will not repeat the details here.
@@ -305,26 +305,26 @@ We summarize it by taking the averages below:
 | test  |             0.111618 |              0.18184  |   0.108507 |
 | train |             0.101274 |              0.176667 |   0.19376  |
 
-We will now interpret the above metrics in more detail. We start with the `mean_absolute_error`, which tells us that on average our predicted rating is about 0.17 off for both the test and train cases. The similarity between these values tell us that our model has not overfitted, and though the values are a noticeable improvement compared to our first model, it is not ideal either. This shows how complex predicting review scores is.
+We will now interpret the above metrics in more detail. We start with the `mean_absolute_error`, which tells us that on average our predicted rating is about `0.17` off for both the test and train cases. The similarity between these values tell us that our model has not overfitted, and though the values are a noticeable improvement compared to our first model, it is not ideal either. This shows how complex predicting review scores is.
 
 Same can be said for our `mean_squared_error`. We note that its value is smaller than the `mean_absolute_error`, which makes sense as it is roughly the square root of the `mean_absolute_error`.
 
-The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our value of 0.19 for train and 0.10 for test shows that our data is right on the edge of the fitting graph, meaning it is right under from overfitting. This is a marked improvement to our linear regression r2 of about 0.8, meaning our second model is a definite improvement.
+The `r2_score` however tells a very interesting story. The `r2_score` is a correlation metric that goes from 0 to 1, where 0 implies no correlation and 1 is identical correlation. Our value of 0.19 for train and `0.10` for test shows that our data is right on the edge of the fitting graph, meaning it is right under from overfitting. This is a marked improvement to our linear regression r2 of about 0.8, meaning our second model is a definite improvement.
 
 ### Model on Fitting Graph
 [Back to table of contents](#table-of-contents)
 
-Based on the similarity of out MSE and MAE, we know that our model has not overfitted the training data. However, the large difference between r2_scores tells us that our model is much father along - or more complex - than our linear regression model on the fitting graph. In other words, adding more layer or complexity may run the risk of overfitting, though we are clearly not there yet. This is very good for us, since it means that our model is quite generalizable (as the 10 folds contain similar values), but also quite difficult as adding large amounts of complexity is likely going to cause us to overfit our data.
+Based on the similarity of our `MSE` and `MAE`, we know that our model has not overfitted the training data. However, the large difference between `r2_scores` tells us that our model is much further along - or more complex - than our linear regression model on the fitting graph. In other words, adding more layer or complexity may run the risk of overfitting, though we are clearly not there yet. This is very good for us, since it means that our model is quite generalizable, but also quite difficult as adding large amounts of complexity is likely going to cause us to overfit our data.
 
 ### Model Improvements
 [Back to table of contents](#table-of-contents)
 
-Compared to our first model, the second model has much higher model complexity, and there is evidence (as discusses in the r2_scores above) that we are approaching the overfitting mark, though we are not there yet. This leaves us at a rather difficult stalemate: We have engineered a lot of features, have a large amount of data, and high model complexity, with optimized hyperparameters and a very small learning rate. This means that any potential model improvements probably needs to involve a major change in how we do our model.
+Compared to our first model, the second model has much higher model complexity, and there is evidence (as discussed in the `r2_scores` above) that we are approaching the overfitting mark, though we are not there yet. This leaves us at a rather difficult stalemate: We have engineered a lot of features, have a large amount of data, and high model complexity, with optimized hyperparameters and a very small learning rate. This means that any potential model improvements probably needs to involve a major change in how we do our model.
 
 Here are some ways in which we may be able to improve our model:
-- Changing the type of NN layers. Right now, we have a "default" NN with backpropagation and only Dense layers with LeakyRelu in between. Perhaps trying different more complicated layers such as convolution or pooling layers may better bring out the correlations in the data.
-- Changing the type of activation function dynamically. Mathematically, each activation function is ideal for a very specific type of identification. Perhaps changing activation functions between layers may help bring out the patterns in the data.
-- Doing more feature engineering. Some features, such as amenities, are only explored by length. Though it can be argued that there isn't much for us to do here, (since how much does amenities, for example, really impact the reviews of a listing?), it also means we have not tapped into this data's full potential. However, a full NLP stack will be necessary for this, which comes with concerns of overfitting and bias.
+- `Changing the type of NN layers.` Right now, we have a "default" NN with backpropagation and only Dense layers with LeakyRelu in between. Perhaps trying different more complicated layers such as convolution or pooling layers may better bring out the correlations in the data.
+- `Changing the type of activation function dynamically.` Mathematically, each activation function is ideal for a very specific type of identification. Perhaps changing activation functions between layers may help bring out the patterns in the data.
+- `Doing more feature engineering.` Some features, such as amenities, are only explored by length. Though it can be argued that there isn't much for us to do here, (since how much does amenities, for example, really impact the reviews of a listing?), it also means we have not tapped into this data's full potential. However, a full NLP stack will be necessary for this, which comes with concerns of overfitting and bias.
 
 ### Conclusion and Next Model
 [Back to table of contents](#table-of-contents)
@@ -339,4 +339,4 @@ In this project, we trained two models: First a linear regression model, which p
 
 In other words, our purpose of providing more information to AirBnB customers for what things to look out for a highly rated (i.e. enjoyable) stay, and AirBnb hosts by what things to work on to deliver better rated experiences (i.e. more profitable listings) has largely been achieved by this model. For the customer, one can take a listing they really like, but say with 0 or very few reviews, and use the model to heuristically predict whether this listing has the characteristics and potential to be a good stay. To the host, one can take a couple new listings and predict roughly whether one will do better than the other in terms of review scores. This may also allow hosts to tune their descriptions, pricing, etc and predict how these things will impact the review rating of their listing.
 
-Thus, we conclude that given our metrics, being able to predict a given listing's review score plus minus 0.1 stars is more than enough precision to provide meaningful insights to both parties, and thus the project is largely a success. We note however, that based on personal experiences, that a 0.1 rating difference can be quite substantial, espeically when so many choices is presented to the customer by AirBnb.
+Thus, we conclude that given our metrics, being able to predict a given listing's review score plus minus `0.1` stars is more than enough precision to provide meaningful insights to both parties, and thus the project is largely a success. We note however, that based on personal experiences, that a `0.1` rating difference can be quite substantial, espeically when so many choices is presented to the customer by AirBnb.
