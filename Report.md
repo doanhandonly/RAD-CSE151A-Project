@@ -96,7 +96,7 @@ Further details can be found in [this file](eda/eda.ipynb).
 #### Whole Dataset Visualizations
 [Back to table of contents](#table-of-contents)
 
-We first show some visuals to demonstrate the sheer size and complexity of our data, starting with our pairplot
+We first show some visuals to demonstrate the sheer size and complexity of our data, starting with our pairplot:
 
 ![Pairplot](figures/Pairplot.png)
 

@@ -8,9 +8,13 @@ Names:
 - Doanh Nguyen, don012 (at) ucsd (dot) edu 
 - Ryan Batubara, rbatubara (at) ucsd (dot) edu
 
-**NOTE:** This readme is also available as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/)!
+**<span style="font-size:2em;">Our written report can be found in [Report.md](Report.md), or as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/Report.html)!</span>**
 
-**Our written report can be found in [Report.md](Report.md), or as a website [here](https://doanhandonly.github.io/RAD-CSE151A-Project/Report.html)!**
+**[A website version of this file is available here](https://doanhandonly.github.io/RAD-CSE151A-Project/)**
+
+**[Go to our Report.md as a file](Report.md)**
+
+**[Go to our Report.md as a website](https://doanhandonly.github.io/RAD-CSE151A-Project/Report.html)**
 
 ## Table of Contents
 - [Predicting AirBnB Review Scores](#predicting-airbnb-review-scores)
@@ -257,6 +261,7 @@ To summarize, we have the following hyperparamters to tune:
 - Activation Function: `relu`,`sigmoid`,`tanh` (for hidden layers)
 
 We define a Keras tuner to do so, and we get the following results:
+
 | Hyperparamter   | Best Value            |
 |-----------------|-----------------------|
 | num_layers      | 9                     |
@@ -269,6 +274,7 @@ We define a Keras tuner to do so, and we get the following results:
 [Back to table of contents](#table-of-contents)
 
 We now do 10-fold cross validation and report the metrics for each fold.
+
 |              |   mean_squared_error |   mean_absolute_error |   r2_score |
 |--------------|----------------------|-----------------------|------------|
 | (0, 'train') |            0.100324  |              0.166675 |  0.187977  |
